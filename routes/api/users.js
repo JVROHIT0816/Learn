@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const user = require('../../models/user');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 const {check, validationResult} = require('express-validator/check');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 //@route  POST api/users
 //@desc   Registration of Users
 //@access Public
+
 router.post('/', 
 [
     check('name', 'Name is required').not().isEmpty(),
@@ -35,13 +38,26 @@ async (req,res) =>{
         const salt = await bcrypt.genSalt(10);
         User.password = await bcrypt.hash(password, salt);
         await User.save();
+        const payload = {
+            user: {
+                id : User.id
+            }
+        }
+        jwt.sign(payload, 
+            config.get('jwtsecret'),
+            {expiresIn: 360000}, 
+            (err,token) =>{
+                if(err) throw(err);
+                //console.log({token});
+                res.json({token});
+            });
     }
     catch(err)
     {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
-    res.send(`User Registered`);
+    //res.send(`User Registered`);
 });
 
 

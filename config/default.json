@@ -1,3 +1,4 @@
 {
-    "mongoURI": "mongodb+srv://rohit:rohit@cluster0.cieem.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+    "mongoURI": "mongodb+srv://rohit:rohit@cluster0.cieem.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    "jwtsecret": "deeznutz"
 }
